@@ -3,8 +3,9 @@ import { AuthService } from 'src/apis/service/auth/auth.service';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { LoginDto } from 'src/apis/dto/auth/login.dto';
 import { RegisterDto } from 'src/apis/dto/auth/register.dto';
-import { Auth } from 'src/core/decorators/auth.decorator';
-import { ROLE } from 'src/core/constants/enum';
+import { User } from 'src/apis/schemas/user.schema';
+import { IResponse } from 'src/core/interfaces/IResponse';
+import { responseError, responseSuccessWithData } from '../base.controller';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -13,13 +14,25 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Login' })
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  async login(@Body() loginDto: LoginDto): Promise<IResponse<any>> {
+    try {
+      const data = await this.authService.login(loginDto);
+      return responseSuccessWithData(data);
+    } catch (error) {
+      console.log(error);
+      return responseError(error.message);
+    }
   }
 
   @ApiOperation({ summary: 'Login' })
   @Post('register')
-  async register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto);
+  async register(@Body() registerDto: RegisterDto): Promise<IResponse<any>> {
+    try {
+      const data = await this.authService.register(registerDto);
+      return responseSuccessWithData(data);
+    } catch (error) {
+      console.log(error);
+      return responseError(error.message);
+    }
   }
 }

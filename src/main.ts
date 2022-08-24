@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import mongoose from 'mongoose';
 
 const PORT = process.env.PORT;
 
@@ -19,6 +20,11 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
+
+  if (process.env.NODE_ENV == 'development') {
+    mongoose.set('debug', true);
+  }
+
   await app.listen(PORT);
   console.log(`Server started on port: ${PORT}`);
 }
