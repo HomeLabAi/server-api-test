@@ -11,6 +11,6 @@ export class BaseSchema {
   @Prop({ type: String })
   deleteBy: string;
 
-  @Prop({ type: Boolean })
-  isEnabled: string;
+  // @Prop({ type: Boolean })
+  // isEnabled: string;
 }
