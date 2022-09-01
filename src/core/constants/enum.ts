@@ -13,3 +13,9 @@ export enum PRODUCT_STATUS {
   APPROVE = 'approve',
   REJECTED = 'rejected',
 }
+
+export enum ORDER_STATUS {
+  PENDDING = 'pendding',
+  APPROVE = 'approve',
+  REJECTED = 'rejected',
+}

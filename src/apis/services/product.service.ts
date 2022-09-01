@@ -12,7 +12,7 @@ export class ProductService {
   ) {}
 
   async getAll() {
-    return this.productModel.find({ isDelete: false });
+    return this.productModel.find({ isDelete: { $ne: true } });
   }
 
   async getById(id: string) {
@@ -25,8 +25,6 @@ export class ProductService {
   }
 
   async create(data: ProductDto, user: string) {
-    console.log(user);
-
     const newProduct = new this.productModel({ ...data, createdBy: user });
     return newProduct.save();
   }
