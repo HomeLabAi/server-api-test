@@ -9,10 +9,10 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ProductDto } from 'src/apis/dto/product/product.dto';
-import { ProductService } from 'src/apis/service/product/product.service';
+import { ProductService } from 'src/apis/services/product.service';
 import { Auth } from 'src/core/decorators/auth.decorator';
 import { User } from 'src/core/decorators/user.decorator';
-import { responseError, responseSuccessWithData } from '../base.controller';
+import { responseError, responseSuccessWithData } from './base.controller';
 
 @ApiTags('product')
 @Controller('product')

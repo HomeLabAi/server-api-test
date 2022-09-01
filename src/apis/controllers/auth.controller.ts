@@ -1,11 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { AuthService } from 'src/apis/service/auth/auth.service';
+import { AuthService } from 'src/apis/services/auth.service';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { LoginDto } from 'src/apis/dto/auth/login.dto';
 import { RegisterDto } from 'src/apis/dto/auth/register.dto';
 import { User } from 'src/apis/schemas/user.schema';
 import { IResponse } from 'src/core/interfaces/IResponse';
-import { responseError, responseSuccessWithData } from '../base.controller';
+import { responseError, responseSuccessWithData } from './base.controller';
 
 @ApiTags('auth')
 @Controller('auth')
