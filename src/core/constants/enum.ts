@@ -19,3 +19,9 @@ export enum ORDER_STATUS {
   APPROVE = 'approve',
   REJECTED = 'rejected',
 }
+
+export enum COMMENT_SORT {
+  MOST_RECENT = 'most_recent',
+  DESCENDING_STAR = 'descending_star',
+  ASCENDING_STAR = 'ascending_star',
+}

@@ -12,12 +12,16 @@ import { Product, ProductSchema } from './schemas/product.schema';
 import { OrderController } from 'src/apis/controllers/order.controller';
 import { OrderService } from 'src/apis/services/order.service';
 import { Order, OrderSchema } from 'src/apis/schemas/order.schema';
+import { CommentController } from 'src/apis/controllers/comment.controller';
+import { CommentService } from 'src/apis/services/comment.service';
+import { Comment, CommentSchema } from 'src/apis/schemas/comment.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Product.name, schema: ProductSchema },
       { name: Order.name, schema: OrderSchema },
+      { name: Comment.name, schema: CommentSchema },
     ]),
   ],
   controllers: [
@@ -25,6 +29,7 @@ import { Order, OrderSchema } from 'src/apis/schemas/order.schema';
     UserController,
     ProductController,
     OrderController,
+    CommentController,
   ],
   providers: [
     UserService,
@@ -32,6 +37,7 @@ import { Order, OrderSchema } from 'src/apis/schemas/order.schema';
     JwtService,
     ProductService,
     OrderService,
+    CommentService,
   ],
 })
 export class ApisModule {}
