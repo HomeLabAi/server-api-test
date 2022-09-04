@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { ProductDto } from 'src/apis/dto/product/product.dto';
 import { Product, ProductDocument } from 'src/apis/schemas/product.schema';
+import { LIMIT, PAGE, PRODUCT_SORT } from '../../core/constants/enum';
+import { ProductFilterDto } from '../dto/product/product-filter.dto';
+import { pagination } from './base.service';
 
 @Injectable()
 export class ProductService {
@@ -11,8 +14,54 @@ export class ProductService {
     private readonly productModel: Model<ProductDocument>,
   ) {}
 
-  async getAll() {
-    return this.productModel.find({ isDelete: { $ne: true } });
+  async getAll(filter: ProductFilterDto) {
+    const {
+      limit = LIMIT,
+      name,
+      page = PAGE,
+      minPrice,
+      maxPrice,
+      sortBy,
+    } = filter;
+
+    const where: FilterQuery<Product>[] = [{ isDelete: { $ne: true } }];
+
+    if (minPrice) where.push({ price: { $gte: minPrice } });
+
+    if (maxPrice) where.push({ price: { $lte: maxPrice } });
+
+    if (name) where.push({ name: { $regex: name, $options: 'i' } });
+
+    const query: FilterQuery<Product> = where.length > 0 ? { $and: where } : {};
+
+    const sort: any =
+      sortBy == PRODUCT_SORT.ASCENDING_STAR
+        ? { star: 1 }
+        : sortBy == PRODUCT_SORT.DESCENDING_STAR
+        ? { star: -1 }
+        : sortBy == PRODUCT_SORT.HIGHT_TO_LOW
+        ? { unitPrice: -1 }
+        : sortBy == PRODUCT_SORT.LOW_TO_HIGHT
+        ? { unitPrice: 1 }
+        : sortBy == PRODUCT_SORT.NEWST
+        ? { createdAt: -1 }
+        : {};
+
+    const countDocument = this.productModel.countDocuments(query);
+    const getProduct = this.productModel
+      .find(query)
+      // .populate('restaurant', '-createdAt -updatedAt')
+      .skip(page * limit - limit)
+      .sort(sort)
+      .limit(limit);
+
+    const [total, products] = await Promise.all([countDocument, getProduct]);
+
+    return {
+      totalPage: pagination(total, limit),
+      currentPage: page,
+      data: products,
+    };
   }
 
   async getById(id: string) {

@@ -26,6 +26,12 @@ export class Product extends BaseSchema {
   @Prop({ type: Number, default: 0 })
   sale: number;
 
+  @Prop({ type: Number, default: 0 })
+  comment: number;
+
+  @Prop({ type: Number, default: 0 })
+  order: number;
+
   // @Prop({ type: String, required: true })
   // categories: [string];
 

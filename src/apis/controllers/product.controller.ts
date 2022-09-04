@@ -6,12 +6,14 @@ import {
   Delete,
   Param,
   Body,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ProductDto } from 'src/apis/dto/product/product.dto';
 import { ProductService } from 'src/apis/services/product.service';
 import { Auth } from 'src/core/decorators/auth.decorator';
 import { User } from 'src/core/decorators/user.decorator';
+import { ProductFilterDto } from '../dto/product/product-filter.dto';
 import { responseError, responseSuccessWithData } from './base.controller';
 
 @ApiTags('product')
@@ -21,9 +23,9 @@ export class ProductController {
 
   @ApiOperation({ summary: 'Login' })
   @Get()
-  async getAll() {
+  async getAll(@Query() filter: ProductFilterDto) {
     try {
-      const data = await this.productService.getAll();
+      const data = await this.productService.getAll(filter);
       return responseSuccessWithData(data);
     } catch (error) {
       console.log(error);

@@ -1,11 +1,30 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { PaginationDto } from '../pagination/pagination.dto';
-import { COMMENT_SORT } from '../../../core/constants/enum';
+import { PRODUCT_SORT } from '../../../core/constants/enum';
 
 export class ProductFilterDto extends PaginationDto {
-  @ApiProperty({ example: COMMENT_SORT.DESCENDING_STAR, enum: COMMENT_SORT })
+  @ApiProperty({ required: false })
   @IsOptional()
-  @IsEnum(COMMENT_SORT)
-  sort: COMMENT_SORT;
+  @IsString()
+  name: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsNumber()
+  minPrice: number;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsNumber()
+  maxPrice: number;
+
+  @ApiProperty({
+    required: false,
+    example: PRODUCT_SORT.NEWST,
+    enum: PRODUCT_SORT,
+  })
+  @IsOptional()
+  @IsEnum(PRODUCT_SORT)
+  sortBy: PRODUCT_SORT;
 }
